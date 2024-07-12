@@ -30,7 +30,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         if(!Auth::attempt($request->only(['username', 'password']))) {
-            return $this->error(null, 'Credentials do not match our records', 401);
+            return $this->error(null, 'These credentials do not match our records', 401);
         }
 
         $user = User::where('username', $request->username)->first();

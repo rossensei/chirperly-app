@@ -1,30 +1,48 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import axios from 'axios';
+import { reactive, ref } from 'vue';
+
+axios.defaults.withCredentials = true;
+
+const form = reactive({
+  username: '',
+  password: '',
+});
+
+const user = ref();
+
+const login = async () => {
+  await axios.get('http://localhost:8000/sanctum/csrf-cookie');
+  await axios.post('http://localhost:8000/api/auth/login', {
+    username: form.username,
+    password: form.password
+  }).then((response) => {
+    user.value = response.data.data.user;
+  });
+}
 </script>
 
 <template>
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+  <div id="container">
+    <div>
+      {{ user }}
+      <form @submit.prevent="login">
+        <div>
+          <label for="username">Username
+            <input id="username" type="text" v-model="form.username">
+          </label>
+        </div>
+        <div>
+          <label for="password">Password
+            <input id="password" type="password" v-model="form.password">
+          </label>
+        </div>
+        <button type="submit">Login</button>
+      </form>
+    </div>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
+
 </style>

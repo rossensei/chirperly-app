@@ -9,8 +9,9 @@ const router = createRouter({
             name: 'home',
             component: () => import('@/views/Home.vue'),
             meta: {
-                layout: AppLayout
-            }
+                layout: AppLayout,
+                requiresAuth: true
+            },
         },
     ]
 })

@@ -1,4 +1,5 @@
 import Axios from 'axios';
+// import Cookies from 'js-cookie';
 
 const axios = Axios.create({
     baseURL: 'http://localhost:8000',
@@ -11,6 +12,7 @@ const axios = Axios.create({
     }
 })
 
+// para asa mani?
 axios.interceptors.response.use(null, (e) => {
     const error = {
         status: e.response?.status,
